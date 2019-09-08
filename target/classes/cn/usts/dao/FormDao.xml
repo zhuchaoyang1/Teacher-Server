@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离 
+注意：使用mapper代理方法开发，namespace有特殊重要的作用，namespace等于mapper接口地址
+-->
+<mapper namespace="cn.usts.dao.FormDao">
+
+    <insert id="save" parameterType="formData">
+        <selectKey keyProperty="pId" keyColumn="p_id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+        <if test="tableName.equals('personal_teacher')">
+            personal_teacher
+        </if>
+        <if test="tableName.equals('personal_team')">
+            personal_team
+        </if>
+        <if test="tableName.equals('inschool_expre')">
+            inschool_expre
+        </if>
+        <if test="tableName.equals('outschool_expre')">
+            outschool_expre
+        </if>
+        <if test="tableName.equals('edu_ref')">
+            edu_ref
+        </if>
+        <if test="tableName.equals('edu_papers')">
+            edu_papers
+        </if>
+        <if test="tableName.equals('stu_compet')">
+            stu_compet
+        </if>
+        <if test="tableName.equals('stu_outcome')">
+            stu_outcome
+        </if>
+        <if test="tableName.equals('training_pro')">
+            training_pro
+        </if>
+        <if test="tableName.equals('teaching_achieve')">
+            teaching_achieve
+        </if>
+        <if test="tableName.equals('profess_con')">
+            profess_con
+        </if>
+        <if test="tableName.equals('course_books')">
+            course_books
+        </if>
+        <if test="tableName.equals('lab_contrust')">
+            lab_contrust
+        </if>
+        (category,title,support,personal_time,personal_level,department,filepath,u_id,filename)
+        VALUES (
+        #{category},
+        #{title},
+        #{support},
+        #{personalTime},
+        #{personalLevel},
+        #{department},
+        #{filepath},
+        #{uID},
+        #{filename}
+        )
+    </insert>
+
+    <select id="getCountSize" parameterType="pageOrSize" resultType="int">
+        SELECT COUNT(*) FROM
+        <if test="tableName.equals('personal_teacher')">
+            personal_teacher
+        </if>
+        <if test="tableName.equals('personal_team')">
+            personal_team
+        </if>
+        <if test="tableName.equals('inschool_expre')">
+            inschool_expre
+        </if>
+        <if test="tableName.equals('outschool_expre')">
+            outschool_expre
+        </if>
+        <if test="tableName.equals('edu_ref')">
+            edu_ref
+        </if>
+        <if test="tableName.equals('edu_papers')">
+            edu_papers
+        </if>
+        <if test="tableName.equals('stu_compet')">
+            stu_compet
+        </if>
+        <if test="tableName.equals('stu_outcome')">
+            stu_outcome
+        </if>
+        <if test="tableName.equals('training_pro')">
+            training_pro
+        </if>
+        <if test="tableName.equals('teaching_achieve')">
+            teaching_achieve
+        </if>
+        <if test="tableName.equals('profess_con')">
+            profess_con
+        </if>
+        <if test="tableName.equals('course_books')">
+            course_books
+        </if>
+        <if test="tableName.equals('lab_contrust')">
+            lab_contrust
+        </if>
+        WHERE
+        u_id = #{id}
+    </select>
+
+    <select id="queryByIdPage" parameterType="pageOrSize" resultMap="mapFormDataUser">
+        SELECT
+        p_id,
+        category,
+        title,
+        support,
+        personal_time,
+        personal_level,
+        department,
+        filepath,
+        filename,
+        sys_user.realName,
+        sys_user.major
+        FROM
+        <if test="tableName.equals('personal_teacher')">
+            personal_teacher,
+        </if>
+        <if test="tableName.equals('personal_team')">
+            personal_team,
+        </if>
+        <if test="tableName.equals('inschool_expre')">
+            inschool_expre,
+        </if>
+        <if test="tableName.equals('outschool_expre')">
+            outschool_expre,
+        </if>
+        <if test="tableName.equals('edu_ref')">
+            edu_ref,
+        </if>
+        <if test="tableName.equals('edu_papers')">
+            edu_papers,
+        </if>
+        <if test="tableName.equals('stu_compet')">
+            stu_compet,
+        </if>
+        <if test="tableName.equals('stu_outcome')">
+            stu_outcome,
+        </if>
+        <if test="tableName.equals('training_pro')">
+            training_pro,
+        </if>
+        <if test="tableName.equals('teaching_achieve')">
+            teaching_achieve,
+        </if>
+        <if test="tableName.equals('profess_con')">
+            profess_con,
+        </if>
+        <if test="tableName.equals('course_books')">
+            course_books,
+        </if>
+        <if test="tableName.equals('lab_contrust')">
+            lab_contrust,
+        </if>
+        sys_user
+        WHERE
+        1 = 1
+        <if test="role == 2">
+            <!-- 老师只能查询自己 -->
+            AND u_id = #{id}
+        </if>
+        <if test="tableName.equals('personal_teacher')">
+            AND sys_user.id = personal_teacher.u_id
+        </if>
+        <if test="tableName.equals('personal_team')">
+            AND sys_user.id = personal_team.u_id
+        </if>
+        <if test="tableName.equals('inschool_expre')">
+            AND sys_user.id = inschool_expre.u_id
+        </if>
+        <if test="tableName.equals('outschool_expre')">
+            AND sys_user.id = outschool_expre.u_id
+        </if>
+        <if test="tableName.equals('edu_ref')">
+            AND sys_user.id = edu_ref.u_id
+        </if>
+        <if test="tableName.equals('edu_papers')">
+            AND sys_user.id = edu_papers.u_id
+        </if>
+        <if test="tableName.equals('stu_outcome')">
+            AND sys_user.id = stu_outcome.u_id
+        </if>
+        <if test="tableName.equals('training_pro')">
+            AND sys_user.id = training_pro.u_id
+        </if>
+        <if test="tableName.equals('teaching_achieve')">
+            AND sys_user.id = teaching_achieve.u_id
+        </if>
+        <if test="tableName.equals('profess_con')">
+            AND sys_user.id = profess_con.u_id
+        </if>
+        <if test="tableName.equals('course_books')">
+            AND sys_user.id = course_books.u_id
+        </if>
+        <if test="tableName.equals('lab_contrust')">
+            AND sys_user.id = lab_contrust.u_id
+        </if>
+        limit #{start},#{size}
+    </select>
+
+    <!-- 为下面两个方法服务 -->
+    <sql id="queryByContidion">
+        <if test="tableName.equals('personal_teacher')">
+            personal_teacher
+        </if>
+        <if test="tableName.equals('personal_team')">
+            personal_team
+        </if>
+        <if test="tableName.equals('inschool_expre')">
+            inschool_expre
+        </if>
+        <if test="tableName.equals('outschool_expre')">
+            outschool_expre
+        </if>
+        <if test="tableName.equals('edu_ref')">
+            edu_ref
+        </if>
+        <if test="tableName.equals('edu_papers')">
+            edu_papers
+        </if>
+        <if test="tableName.equals('stu_compet')">
+            stu_compet
+        </if>
+        <if test="tableName.equals('stu_outcome')">
+            stu_outcome
+        </if>
+        <if test="tableName.equals('training_pro')">
+            training_pro
+        </if>
+        <if test="tableName.equals('teaching_achieve')">
+            teaching_achieve
+        </if>
+        <if test="tableName.equals('profess_con')">
+            profess_con
+        </if>
+        <if test="tableName.equals('course_books')">
+            course_books
+        </if>
+        <if test="tableName.equals('lab_contrust')">
+            lab_contrust
+        </if>
+        WHERE
+        1 = 1
+        <if test="role == 2">
+            <!-- 老师只能查询自己 -->
+            AND u_id = #{id}
+        </if>
+        <if test="role == 1 and formData.sysUser != null">
+            <!-- 学院领导可以查看[专业] [教师] -->
+            <if test="formData.sysUser.realName != null">
+                AND sys_user.realName LIKE '%${formData.sysUser.realName}%'
+            </if>
+            <if test="formData.sysUser.major != null">
+                AND sys_user.major LIKE '%${formData.sysUser.major}%'
+            </if>
+        </if>
+        <if test="formData.category != null">
+            AND category LIKE '%${formData.category}%'
+        </if>
+        <if test="formData.title != null">
+            AND title LIKE '%${formData.title}%'
+        </if>
+        <if test="formData.support != null">
+            AND support LIKE '%${formData.support}%'
+        </if>
+        <if test="formData.personalTime != null">
+            AND personal_time LIKE '%${formData.personalTime}%'
+        </if>
+        <if test="formData.personalLevel != null">
+            AND personal_level LIKE '%${formData.personalLevel}%'
+        </if>
+        <if test="formData.department != null">
+            AND department LIKE '%${formData.department}%'
+        </if>
+    </sql>
+
+    <!-- 多条件搜索查询数量 -->
+    <select id="formDataByConCount" parameterType="pageOrSize" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        sys_user,
+        <include refid="queryByContidion"></include>
+    </select>
+
+    <!-- 多条件搜索查询 -->
+    <select id="formDataByConditions" parameterType="pageOrSize" resultMap="mapFormDataUser">
+        SELECT
+        p_id,
+        category,
+        title,
+        support,
+        personal_time,
+        personal_level,
+        department,
+        filepath,
+        filename,
+        sys_user.realName,
+        sys_user.major
+        FROM
+        sys_user,
+        <include refid="queryByContidion"></include>
+        <if test="tableName.equals('personal_teacher')">
+            AND sys_user.id = personal_teacher.u_id
+        </if>
+        <if test="tableName.equals('personal_team')">
+            AND sys_user.id = personal_team.u_id
+        </if>
+        <if test="tableName.equals('inschool_expre')">
+            AND sys_user.id = inschool_expre.u_id
+        </if>
+        <if test="tableName.equals('outschool_expre')">
+            AND sys_user.id = outschool_expre.u_id
+        </if>
+        <if test="tableName.equals('edu_ref')">
+            AND sys_user.id = edu_ref.u_id
+        </if>
+        <if test="tableName.equals('edu_papers')">
+            AND sys_user.id = edu_papers.u_id
+        </if>
+        <if test="tableName.equals('stu_compet')">
+            AND sys_user.id = stu_compet.u_id
+        </if>
+        <if test="tableName.equals('stu_outcome')">
+            AND sys_user.id = stu_outcome.u_id
+        </if>
+        <if test="tableName.equals('training_pro')">
+            AND sys_user.id = training_pro.u_id
+        </if>
+        <if test="tableName.equals('teaching_achieve')">
+            AND sys_user.id = teaching_achieve.u_id
+        </if>
+        <if test="tableName.equals('profess_con')">
+            AND sys_user.id = profess_con.u_id
+        </if>
+        <if test="tableName.equals('course_books')">
+            AND sys_user.id = course_books.u_id
+        </if>
+        <if test="tableName.equals('lab_contrust')">
+            AND sys_user.id = lab_contrust.u_id
+        </if>
+        limit #{start},#{size}
+    </select>
+
+
+    <!-- 为校领导或老师筛选下载使用 区别：不带有分类 -->
+    <resultMap type="formData" id="mapFormDataUser">
+        <id property="pId" column="p_id"/>
+        <result property="category" column="category"/>
+        <result property="title" column="title"/>
+        <result property="support" column="support"/>
+        <result property="personalTime" column="personal_time"/>
+        <result property="personalLevel" column="personal_level"/>
+        <result property="department" column="department"/>
+        <result property="filepath" column="filepath"/>
+        <result property="filename" column="filename"/>
+        <!--
+			一对一查询详细clothDetail表
+		 -->
+        <association property="sysUser" javaType="sysUser">
+            <id property="realName" column="realName"/>
+            <id property="major" column="major"/>
+        </association>
+    </resultMap>
+    <select id="formDataByConNoPage" parameterType="pageOrSize" resultMap="mapFormDataUser">
+        SELECT
+        p_id,
+        category,
+        title,
+        support,
+        personal_time,
+        personal_level,
+        department,
+        filepath,
+        filename,
+        sys_user.realName,
+        sys_user.major
+        FROM
+        sys_user,
+        <include refid="queryByContidion"></include>
+        <if test="tableName.equals('personal_teacher')">
+            AND sys_user.id = personal_teacher.u_id
+        </if>
+        <if test="tableName.equals('personal_team')">
+            AND sys_user.id = personal_team.u_id
+        </if>
+        <if test="tableName.equals('inschool_expre')">
+            AND sys_user.id = inschool_expre.u_id
+        </if>
+        <if test="tableName.equals('outschool_expre')">
+            AND sys_user.id = outschool_expre.u_id
+        </if>
+        <if test="tableName.equals('edu_ref')">
+            AND sys_user.id = edu_ref.u_id
+        </if>
+        <if test="tableName.equals('edu_papers')">
+            AND sys_user.id = edu_papers.u_id
+        </if>
+        <if test="tableName.equals('stu_compet')">
+            AND sys_user.id = stu_compet.u_id
+        </if>
+        <if test="tableName.equals('stu_outcome')">
+            AND sys_user.id = stu_outcome.u_id
+        </if>
+        <if test="tableName.equals('training_pro')">
+            AND sys_user.id = training_pro.u_id
+        </if>
+        <if test="tableName.equals('teaching_achieve')">
+            AND sys_user.id = teaching_achieve.u_id
+        </if>
+        <if test="tableName.equals('profess_con')">
+            AND sys_user.id = profess_con.u_id
+        </if>
+        <if test="tableName.equals('course_books')">
+            AND sys_user.id = course_books.u_id
+        </if>
+        <if test="tableName.equals('lab_contrust')">
+            AND sys_user.id = lab_contrust.u_id
+        </if>
+    </select>
+</mapper>

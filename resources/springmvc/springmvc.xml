@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <!-- 配置注解，使用注解开发 -->
+    <context:component-scan base-package="cn.usts.controller" />
+    <!--
+        annotation-driven:默认创建了多个对象：
+        RequestMappingHandlerMapping，处理器映射器
+        RequestMappingHandlerAdapter  处理器处理器
+        且提供对json格式支持
+     -->
+    <mvc:annotation-driven />
+
+    <mvc:interceptors>
+        <!--过滤所有请求，处理跨域请求问题-->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="cn.usts.util.netInterceptor.CORSInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+    <!-- 配置逻辑视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!-- 开启文件上传功能 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 最大大小20M -->
+        <property name="maxUploadSize" value="20971520"></property>
+        <!-- 缓存大小10M -->
+        <property name="maxInMemorySize" value="10240000"></property>
+    </bean>
+
+</beans>
