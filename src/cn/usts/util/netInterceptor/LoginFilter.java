@@ -31,7 +31,7 @@ public class LoginFilter implements Filter {
             // 所有的跨域OPTIONS请求直接放行
             flag = true;
         } else {
-            if (requestUrl.equals("/user/query.do") || requestUrl.equals("/") || requestUrl.equals("/file/fileUpload.do") || requestUrl.equals("/form/singalDownload.do") || requestUrl.equals("/file/deleteFile.do") || requestUrl.equals("/out/system.do") || requestUrl.equals("/form/screen.do")) {
+            if (requestUrl.equals("/TeachingManagement/user/query.do") || requestUrl.equals("/") || requestUrl.equals("/TeachingManagement") || requestUrl.equals("/TeachingManagement/file/fileUpload.do") || requestUrl.equals("/TeachingManagement/form/singalDownload.do") || requestUrl.equals("/TeachingManagement/file/deleteFile.do") || requestUrl.equals("/TeachingManagement/out/system.do") || requestUrl.equals("/TeachingManagement/form/screen.do")) {
                 // 登录请求直接放行 或者 Tomcat加载 或者Upload上传文件 或者 下载文件  或者 注销
                 flag = true;
             } else {

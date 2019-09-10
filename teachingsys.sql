@@ -4,7 +4,7 @@ Source Host     : localhost:3306
 Source Database : teachingsys
 Target Host     : localhost:3306
 Target Database : teachingsys
-Date: 2019-09-09 01:41:46
+Date: 2019-09-10 18:39:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,12 +24,13 @@ CREATE TABLE `course_books` (
   `filepath` varchar(255) DEFAULT NULL,
   `filename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of course_books
 -- ----------------------------
-INSERT INTO `course_books` VALUES ('0000000001', '4', 'f', 'f', 'f', '2019-09-23', 'f', 'f', '/upload/courseBooks/3344bf28-fd9e-4246-a046-d7dcbd5b6e61构建长效同机制强化校企资源融合提升信息类人才工程应用能力.txt', '构建长效同机制强化校企资源融合提升信息类人才工程应用能力.txt');
+INSERT INTO `course_books` VALUES ('0000000002', '3', '1', '1', '1', '2019-09-30', '1', '1', '/upload/courseBooks/d204e5ad-5604-49b7-8017-983b5bd4656d傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `course_books` VALUES ('0000000003', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/courseBooks/9e6d752b-5aea-48c1-9dc4-edaa16fc0c8a丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for edu_papers
@@ -47,12 +48,13 @@ CREATE TABLE `edu_papers` (
   `filepath` varchar(255) DEFAULT NULL,
   `filename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of edu_papers
 -- ----------------------------
-INSERT INTO `edu_papers` VALUES ('00000000001', '4', '1', '2', '2', '2019-09-24', '2', '2', '/upload/eduPapers/89843bb3-2eab-40c2-8480-d52f6a745a79新建文本文档 (2).txt', '新建文本文档 (2).txt');
+INSERT INTO `edu_papers` VALUES ('00000000002', '3', '1', '1', '1', '2019-09-23', '1', '1', '/upload/eduPapers/8e2b6772-c702-472f-b9c7-b67db571c3e7傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `edu_papers` VALUES ('00000000003', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/eduPapers/a4d31f94-b6b2-44f1-9c6a-96277ec5dc7f丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for edu_ref
@@ -70,12 +72,13 @@ CREATE TABLE `edu_ref` (
   `filepath` varchar(100) DEFAULT NULL,
   `filename` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of edu_ref
 -- ----------------------------
-INSERT INTO `edu_ref` VALUES ('00000000001', '4', '2', '2', '2', '2019-08-29', '2', '2', '/upload/educationalReform/eduRef/d64cda3f-b1e8-45c1-b485-83ecba4f085a新建文本文档.txt', '新建文本文档.txt');
+INSERT INTO `edu_ref` VALUES ('00000000002', '3', '1', '1', '1', '2019-09-30', '1', '1', '/upload/educationalReform/eduRef/42912361-7e0f-4e5d-a54e-13b48becf6c9傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `edu_ref` VALUES ('00000000003', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/educationalReform/eduRef/09a188d9-28e3-4252-9ff7-bb7a3d0f32c6丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for inschool_expre
@@ -93,12 +96,13 @@ CREATE TABLE `inschool_expre` (
   `filepath` varchar(300) DEFAULT NULL,
   `filename` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inschool_expre
 -- ----------------------------
-INSERT INTO `inschool_expre` VALUES ('00000000007', '4', '123', '123', '123', '2019-08-13', '123', '123', '/upload/experiments/in/98878afb-dd4f-4ceb-bd8c-5d65c732c82bnginx.conf', 'nginx.conf');
+INSERT INTO `inschool_expre` VALUES ('00000000008', '3', '1', '1', '1', '2019-09-09', '1', '1', '/upload/experiments/in/4e272418-3f32-4d7c-996c-6ed300e446d5傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `inschool_expre` VALUES ('00000000009', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/experiments/in/5dd28f0b-7e23-453f-893c-98e14ac75fea丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for lab_contrust
@@ -116,12 +120,15 @@ CREATE TABLE `lab_contrust` (
   `filepath` varchar(255) DEFAULT NULL,
   `filename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of lab_contrust
 -- ----------------------------
-INSERT INTO `lab_contrust` VALUES ('0000000001', '4', '2', '2', '2', '2019-09-17', '2', '2', '/upload/labContrust/0e6c68b0-e172-4c39-b255-840690b8f78e新建文本文档.txt', '新建文本文档.txt');
+INSERT INTO `lab_contrust` VALUES ('0000000002', '3', '1', '1', '1', '2019-09-30', '1', '1', '/upload/labContrust/7d6e6672-6130-447a-9edc-60768f977988傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `lab_contrust` VALUES ('0000000003', '3', '2', '2', '1', '2019-09-30', '1', '2', '/upload/labContrust/acd9026a-d209-495c-9ad3-c6615261483c傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `lab_contrust` VALUES ('0000000004', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/labContrust/55828851-9e7e-41e3-a664-be2394322fd6丁老师文件测试.docx', '丁老师文件测试.docx');
+INSERT INTO `lab_contrust` VALUES ('0000000005', '4', '3', '3', '3', '2019-09-30', '3', '3', '/upload/labContrust/6dbbd9d4-28b0-4f52-838b-9e285e071db4院领导文件测试.xlsx', '院领导文件测试.xlsx');
 
 -- ----------------------------
 -- Table structure for outschool_expre
@@ -139,12 +146,13 @@ CREATE TABLE `outschool_expre` (
   `filepath` varchar(100) DEFAULT NULL,
   `filename` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of outschool_expre
 -- ----------------------------
-INSERT INTO `outschool_expre` VALUES ('00000000001', '4', '1', '1', '1', '2019-08-29', '1', '1', '/upload/experiments/out/7df0f1a8-c815-4adb-b276-ce0946405821新建文本文档.txt', '新建文本文档.txt');
+INSERT INTO `outschool_expre` VALUES ('00000000002', '3', '1', '1', '1', '2019-09-30', '1', '1', '/upload/experiments/out/e55c0232-fd3f-4081-ab28-bd5ced2009be傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `outschool_expre` VALUES ('00000000003', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/experiments/out/05b8fe93-995f-4206-a5a4-3799383b0379丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for personal_teacher
@@ -164,12 +172,13 @@ CREATE TABLE `personal_teacher` (
   PRIMARY KEY (`p_id`),
   KEY `u_id` (`u_id`),
   CONSTRAINT `personal_teacher_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `sys_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of personal_teacher
 -- ----------------------------
-INSERT INTO `personal_teacher` VALUES ('00000000047', '4', '1', '1', '1', '2019-08-30', '1', '1', '/upload/teachers/personal/bb3a99c9-24ba-4092-a2e2-0ce7e5c68c8e1564930974(1).jpg', '1564930974(1).jpg');
+INSERT INTO `personal_teacher` VALUES ('00000000049', '3', '1', '1', '1', '2019-09-02', '1', '1', '/upload/teachers/personal/0d0cc4ff-09c3-48d0-a7ca-61e8236c74f3傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `personal_teacher` VALUES ('00000000050', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/teachers/personal/a9984619-0c71-4bdf-ab39-61792282b8c9丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for personal_team
@@ -187,12 +196,13 @@ CREATE TABLE `personal_team` (
   `filepath` varchar(300) DEFAULT NULL,
   `filename` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of personal_team
 -- ----------------------------
-INSERT INTO `personal_team` VALUES ('00000000008', '4', '2', '2', '2', '2019-08-27', '2', '2', '/upload/teachers/teams/dc0aadee-7629-4865-9fcd-0c23df7b7e1e智慧城市数据挖掘.txt', '智慧城市数据挖掘.txt');
+INSERT INTO `personal_team` VALUES ('00000000009', '3', '1', '1', '1', '2019-09-23', '1', '1', '/upload/teachers/teams/080fe929-63d1-40d5-ac99-9431ee339e2a傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `personal_team` VALUES ('00000000010', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/teachers/teams/03768eb2-5591-4fa3-bcd5-e17be3217629丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for profess_con
@@ -210,12 +220,13 @@ CREATE TABLE `profess_con` (
   `filepath` varchar(255) DEFAULT NULL,
   `filename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of profess_con
 -- ----------------------------
-INSERT INTO `profess_con` VALUES ('0000000001', '4', 't', 't', 't', '2019-09-15', 't', 't', '/upload/professCon/bed43a38-7347-441d-a1df-6161807d3e6e构建长效同机制强化校企资源融合提升信息类人才工程应用能力.txt', '构建长效同机制强化校企资源融合提升信息类人才工程应用能力.txt');
+INSERT INTO `profess_con` VALUES ('0000000002', '3', '1', '1', '1', '2019-09-30', '1', '1', '/upload/professCon/29032138-583a-47bb-9dca-10f7d25b0958傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `profess_con` VALUES ('0000000003', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/professCon/0bc8094f-1c9b-4725-a0a1-fd53a7b9fc9a丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for stu_compet
@@ -233,12 +244,13 @@ CREATE TABLE `stu_compet` (
   `filepath` varchar(255) DEFAULT NULL,
   `filename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stu_compet
 -- ----------------------------
-INSERT INTO `stu_compet` VALUES ('0000000001', '4', '4', '4', '4', '2019-09-26', '4', '4', '/upload/stuCompet/ce916857-568a-4bc8-b4de-9e6c3a4c2de4新建文本文档.txt', '新建文本文档.txt');
+INSERT INTO `stu_compet` VALUES ('0000000008', '3', '1', '1', '1', '2019-09-16', '1', '1', '/upload/stuCompet/6226ebd0-385e-4978-b35d-8b6fe69bdea5傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `stu_compet` VALUES ('0000000009', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/stuCompet/8764afcb-d464-4cb3-8a79-cd99bffbdca6丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for stu_outcome
@@ -256,12 +268,13 @@ CREATE TABLE `stu_outcome` (
   `filepath` varchar(255) DEFAULT NULL,
   `filename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stu_outcome
 -- ----------------------------
-INSERT INTO `stu_outcome` VALUES ('0000000001', '4', '1', '1', '2', '2019-09-10', '2', '2', '/upload/stuOutComes/e44faf86-28e1-48d6-8b80-fd6dc2ec87bc新建文本文档 (2).txt', '新建文本文档 (2).txt');
+INSERT INTO `stu_outcome` VALUES ('0000000002', '3', '1', '1', '1', '2019-09-30', '1', '1', '/upload/stuOutComes/29d71989-fe24-4232-8b74-11729de3d37c傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `stu_outcome` VALUES ('0000000003', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/stuOutComes/e1e44290-d9ed-4489-8dc1-096e40007e25丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for sys_service
@@ -273,20 +286,11 @@ CREATE TABLE `sys_service` (
   `textarea` varchar(500) DEFAULT NULL,
   `rateCount` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_service
 -- ----------------------------
-INSERT INTO `sys_service` VALUES ('00000000001', '3', 'dwq', '0');
-INSERT INTO `sys_service` VALUES ('00000000002', '3', 'dwq', '3');
-INSERT INTO `sys_service` VALUES ('00000000003', '3', 'few', '4');
-INSERT INTO `sys_service` VALUES ('00000000004', '3', 'dwq', '5');
-INSERT INTO `sys_service` VALUES ('00000000005', '3', 'dwq', '5');
-INSERT INTO `sys_service` VALUES ('00000000006', '3', 'dwq', '2');
-INSERT INTO `sys_service` VALUES ('00000000007', null, 'dwq', '4');
-INSERT INTO `sys_service` VALUES ('00000000008', null, 'dwq', '1');
-INSERT INTO `sys_service` VALUES ('00000000009', null, 'haixing', '4');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -300,15 +304,14 @@ CREATE TABLE `sys_user` (
   `realName` varchar(20) DEFAULT NULL,
   `major` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('3', '16200135231', 'a587bf9631ebebd2270146ccc96d9020', '2', '傅老师', '计算机科学与技术');
 INSERT INTO `sys_user` VALUES ('4', '16200', '5e1f128ae6bd71960aa75fdd584b9db5', '1', '某院长', '');
-INSERT INTO `sys_user` VALUES ('5', '16200135232', 'd6820ee6c1a1029f685277e96ac98870', '2', '丁老师', '智慧建筑专业');
-INSERT INTO `sys_user` VALUES ('6', 'admin', '21232f297a57a5a743894a0e4a801fc3', '0', '管理员', '无');
+INSERT INTO `sys_user` VALUES ('5', '16200135232', 'd6820ee6c1a1029f685277e96ac98870', '2', '丁老师', '计算机科学与技术');
 
 -- ----------------------------
 -- Table structure for teaching_achieve
@@ -326,12 +329,13 @@ CREATE TABLE `teaching_achieve` (
   `filepath` varchar(255) DEFAULT NULL,
   `filename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of teaching_achieve
 -- ----------------------------
-INSERT INTO `teaching_achieve` VALUES ('0000000001', '4', '8', '8', '8', '2019-10-01', '8', '8', '/upload/teachingAchieve/2215d030-8dee-43ee-aebe-3cc41439e762新建文本文档 (2).txt', '新建文本文档 (2).txt');
+INSERT INTO `teaching_achieve` VALUES ('0000000002', '3', '1', '1', '1', '2019-09-30', '1', '1', '/upload/teachingAchieve/ca91c4e2-fc6d-40c6-936b-8e5660aa0385傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `teaching_achieve` VALUES ('0000000003', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/teachingAchieve/5da766c0-4302-46eb-9c6a-ccfc32b6558c丁老师文件测试.docx', '丁老师文件测试.docx');
 
 -- ----------------------------
 -- Table structure for training_pro
@@ -349,10 +353,10 @@ CREATE TABLE `training_pro` (
   `filepath` varchar(255) DEFAULT NULL,
   `filename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of training_pro
 -- ----------------------------
-INSERT INTO `training_pro` VALUES ('0000000001', '4', '2', '2', '2', '2019-09-23', '2', '2', '/upload/trainingPro/71eef6ec-0dab-4e9c-adec-af19f3c6cff7构建长效同机制强化校企资源融合提升信息类人才工程应用能力.txt', '构建长效同机制强化校企资源融合提升信息类人才工程应用能力.txt');
-INSERT INTO `training_pro` VALUES ('0000000002', '4', '1', '1', '1', '2019-09-04', '1', '1', '/upload/trainingPro/80aad72d-bbbb-49ec-89a7-3da8bf9264fe新建文本文档 (2).txt', '新建文本文档 (2).txt');
+INSERT INTO `training_pro` VALUES ('0000000004', '3', '1', '1', '1', '2019-09-30', '1', '1', '/upload/trainingPro/aae11f00-a9f1-4baa-957f-7c16dac7ac55傅老师文件.txt', '傅老师文件.txt');
+INSERT INTO `training_pro` VALUES ('0000000005', '5', '2', '2', '2', '2019-09-30', '2', '2', '/upload/trainingPro/8e2ed767-88c6-4f28-9f9b-d79e4ee13303丁老师文件测试.docx', '丁老师文件测试.docx');
