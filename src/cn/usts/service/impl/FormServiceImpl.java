@@ -5,6 +5,7 @@ import cn.usts.pojo.FormData;
 import cn.usts.pojo.page.PageOrSize;
 import cn.usts.service.FormService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * @Date: 2019/7/17 0:17
  */
 @Service
+@Transactional
 public class FormServiceImpl implements FormService {
 
     @Resource
