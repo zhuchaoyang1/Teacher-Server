@@ -4,6 +4,7 @@ import cn.usts.dao.base.IBaseDao;
 import cn.usts.pojo.FormData;
 import cn.usts.pojo.page.PageOrSize;
 
+import java.text.Normalizer;
 import java.util.List;
 
 /**
@@ -11,18 +12,20 @@ import java.util.List;
  * @Date: 2019/7/16 23:18
  */
 
-public interface FormDao extends IBaseDao<FormData>{
+public interface FormDao extends IBaseDao<FormData> {
 
     /**
      * 查询数据长度
+     *
      * @param pageOrSize
-     * @return  Size
+     * @return Size
      */
     int getCountSize(PageOrSize pageOrSize);
 
     /**
      * 多条件查询数量
-     * @param pageOrSize    Bean
+     *
+     * @param pageOrSize Bean
      * @return
      */
     int formDataByConCount(PageOrSize pageOrSize);
@@ -31,7 +34,8 @@ public interface FormDao extends IBaseDao<FormData>{
      * 根据条件去查询所有数据
      * 带有分页
      * 用于校领导或老师筛选并分页查看表格
-     * @return  list
+     *
+     * @return list
      */
     List<FormData> formDataByConditions(PageOrSize pageOrSize);
 
@@ -40,11 +44,19 @@ public interface FormDao extends IBaseDao<FormData>{
      * 根据条件去查询所有数据
      * 不带有分页
      * 用于校领导或老师筛选下载
-     * @return  list
+     *
+     * @return list
      */
     List<FormData> formDataByConNoPage(PageOrSize pageOrSize);
 
+    /**
+     * 更新 文件路径以及文件名称
+     *
+     * @param formData
+     */
+    void updateFileNameAndPath(FormData formData);
 
 
+    List<FormData> queryBeBean2(FormData formData);
 
 }

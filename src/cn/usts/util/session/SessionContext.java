@@ -47,4 +47,8 @@ public class SessionContext {
         return sessionMap.get(sessionID);
     }
 
+    public synchronized int getSessionSize() {
+        return sessionMap.size();
+    }
+
 }

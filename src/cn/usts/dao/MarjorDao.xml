@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离 
+注意：使用mapper代理方法开发，namespace有特殊重要的作用，namespace等于mapper接口地址
+-->
+<mapper namespace="cn.usts.dao.MarjorDao">
+
+    <insert id="save" parameterType="marjor">
+        <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+        marjor
+        (marjorName,collegeName,collegeId)
+        VALUES (
+        #{marjorName},#{collegeName},#{collegeId}
+        )
+    </insert>
+
+    <select id="queryAll" resultType="marjor">
+        SELECT * FROM marjor
+    </select>
+
+    <delete id="delete" parameterType="marjor">
+        DELETE FROM
+        marjor
+        WHERE
+        id = #{id}
+    </delete>
+
+    <select id="queryByBean" parameterType="marjor" resultType="marjor">
+        SELECT
+        *
+        FROM
+        marjor
+        WHERE
+        marjorName = #{marjorName}
+        AND
+        collegeName = #{collegeName}
+    </select>
+
+    <select id="findAllByCollegeName" parameterType="marjor" resultType="marjor">
+        SELECT
+        *
+        FROM
+        marjor
+        WHERE
+        collegeName = #{collegeName}
+    </select>
+
+    <select id="findAllmarjorNamesByCollege" parameterType="marjor" resultType="string">
+        SELECT
+        marjorName
+        FROM
+        marjor
+        WHERE
+        collegeName = #{collegeName}
+    </select>
+</mapper>

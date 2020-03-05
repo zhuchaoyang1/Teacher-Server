@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离 
+注意：使用mapper代理方法开发，namespace有特殊重要的作用，namespace等于mapper接口地址
+-->
+<mapper namespace="cn.usts.dao.TeachingActivitiesDao">
+
+    <insert id="save" parameterType="teachingActivities">
+        <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+        teaching_activities
+        (uId,descName,filename,filepath,college,marjor,deteTime,attentPeople)
+        VALUES (
+        #{uId},#{descName},#{filename}, #{filepath},#{college},#{marjor},#{deteTime},#{attentPeople}
+        )
+    </insert>
+
+    <select id="queryByBean" parameterType="teachingActivities" resultType="teachingActivities">
+        SELECT
+        *
+        FROM
+        teaching_activities
+        WHERE
+        college = #{college}
+        OR
+        marjor = #{marjor}
+        limit #{start},#{size}
+    </select>
+
+    <select id="queryCount" parameterType="teachingActivities" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        teaching_activities
+        WHERE
+        college = #{college}
+        OR
+        marjor = #{marjor}
+    </select>
+
+    <delete id="delete" parameterType="teachingActivities">
+        DELETE FROM
+        teaching_activities
+        WHERE
+        id = #{id}
+    </delete>
+
+    <select id="queryById" parameterType="int" resultType="teachingActivities">
+        SELECT
+        *
+        FROM
+        teaching_activities
+        WHERE
+        id = #{id}
+    </select>
+
+    <update id="updateFileInfo" parameterType="teachingActivities">
+        UPDATE
+        teaching_activities
+        SET
+        filepath = '',
+        filename = ''
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="update" parameterType="teachingActivities">
+          UPDATE
+          teaching_activities
+          SET
+          descName = #{descName},
+          filepath = #{filepath},
+          filename = #{filename},
+          deteTime = #{deteTime},
+          attentPeople = #{attentPeople}
+          WHERE
+          id = #{id}
+    </update>
+
+
+</mapper>

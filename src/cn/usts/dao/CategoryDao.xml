@@ -9,13 +9,26 @@
 <mapper namespace="cn.usts.dao.CategoryDao">
 
     <insert id="save" parameterType="categoryEntity">
-        <selectKey keyProperty="pId" keyColumn="p_id" resultType="int" order="AFTER">
+        <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT INTO
         category
+        (cateName)
         VALUES (
-        #{cate_name}
+        #{cateName}
         )
     </insert>
+
+    <!-- 查询所有类别标签 -->
+    <select id="queryAll" resultType="categoryEntity">
+        SELECT * FROM category
+    </select>
+
+    <delete id="delete" parameterType="categoryEntity">
+        DELETE FROM
+        category
+        WHERE
+        id = #{id}
+    </delete>
 </mapper>

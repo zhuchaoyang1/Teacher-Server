@@ -1,13 +1,12 @@
 package cn.usts.util.excel;
 
 import cn.usts.pojo.FormData;
-import cn.usts.util.ConvertTime;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -56,12 +55,12 @@ public class CreateExcelUtil {
         headerFont.setFontHeightInPoints((short) 10);
         // 为标题样式设置字体样式
         headerStyle.setFont(headerFont);
-        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+//        headerStyle.setAlignment(HorizontalAlignment.CENTER);
 
         // 设置数据列字体样式
         HSSFCellStyle columnStyle = wb.createCellStyle();
         columnStyle.setWrapText(true);
-        columnStyle.setAlignment(HorizontalAlignment.CENTER);
+//        columnStyle.setAlignment(HorizontalAlignment.CENTER);
 
         for (int i = 0; i < SHEETHEADERS.length; i++) {
             sheet.autoSizeColumn((short) i);
@@ -94,7 +93,7 @@ public class CreateExcelUtil {
             cell3.setCellValue(formData.getCategory());
             cell4.setCellValue(formData.getTitle());
             cell5.setCellValue(formData.getSupport());
-            cell6.setCellValue(ConvertTime.dateToString(formData.getPersonalTime()));
+            cell6.setCellValue(new SimpleDateFormat("yyyy-MM-dd").format(formData.getPersonalTime()));
             cell7.setCellValue(formData.getPersonalLevel());
             cell8.setCellValue(formData.getDepartment());
 //            cell9.setCellValue(formData.getFilename() + i);

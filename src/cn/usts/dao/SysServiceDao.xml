@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离 
 注意：使用mapper代理方法开发，namespace有特殊重要的作用，namespace等于mapper接口地址
 -->
 <mapper namespace="cn.usts.dao.SysServiceDao">
 
-	<insert id="save" parameterType="sysService">
-		<selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-		INSERT INTO SYS_SERVICE
-		<!-- 区分是否匿名评价 -->
-		<if test="uId != 0">
-			(uId,textarea,rateCount)
-			VALUES
-			(#{uId},#{textarea},#{rateCount})
-		</if>
-		<if test="uId == 0">
-			(textarea,rateCount)
-			VALUES
-			(#{textarea},#{rateCount})
-		</if>
-	</insert>
+    <insert id="save" parameterType="sysService">
+        <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO sys_service
+        <!-- 区分是否匿名评价 -->
+        <if test="uId != 0">
+            (uId,textarea,rateCount)
+            VALUES
+            (#{uId},#{textarea},#{rateCount})
+        </if>
+        <if test="uId == 0">
+            (textarea,rateCount)
+            VALUES
+            (#{textarea},#{rateCount})
+        </if>
+    </insert>
 
+    <select id="queryByBean" parameterType="sysService" resultType="sysService">
+		SELECT
+		*
+		FROM
+		sys_service
+		limit #{start},#{size}
+	</select>
+
+    <select id="getCountSize" parameterType="sysService" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        sys_service
+    </select>
 </mapper>

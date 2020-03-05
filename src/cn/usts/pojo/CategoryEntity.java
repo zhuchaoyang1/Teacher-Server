@@ -13,6 +13,6 @@ public class CategoryEntity {
 
     private Integer id;
 
-    private String cate_name;
+    private String cateName;
 
 }

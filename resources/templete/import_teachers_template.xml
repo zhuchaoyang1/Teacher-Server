@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbook>
+    <worksheet name="teachers">
+        <section startRow="0" endRow="0"/>
+        <loop startRow="1" endRow="1" items="teachers" var="bean" varType="cn.usts.pojo.SysUser">
+            <section startRow="1" endRow="1">
+                <mapping row="1" col="0">bean.realName</mapping>
+                <mapping row="1" col="1">bean.roleStr</mapping>
+                <mapping row="1" col="2">bean.phone</mapping>
+                <mapping row="1" col="3">bean.name</mapping>
+                <mapping row="1" col="4">bean.password</mapping>
+                <mapping row="1" col="5">bean.college</mapping>
+                <mapping row="1" col="6">bean.major</mapping>
+            </section>
+            <loopbreakcondition>
+                <rowcheck offset="0">
+                    <cellcheck offset="0"></cellcheck>
+                </rowcheck>
+            </loopbreakcondition>
+        </loop>
+    </worksheet>
+</workbook>

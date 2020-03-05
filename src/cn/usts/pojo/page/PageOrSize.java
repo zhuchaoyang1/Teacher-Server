@@ -54,13 +54,18 @@ public class PageOrSize {
 
     private String realName;
 
+    private String college;
+
+    private String marjor;
+
 
     public PageOrSize() {
 
     }
 
     public PageOrSize(Integer id, int size, int start, String tableName,
-                      String userToken, FormData formData, String role,String strTime,String realName) {
+                      String userToken, FormData formData, String role, String strTime,
+                      String realName, String college, String marjor) {
         this.id = id;
         this.size = size;
         this.start = start;
@@ -70,6 +75,8 @@ public class PageOrSize {
         this.role = role;
         this.strTime = strTime;
         this.realName = realName;
+        this.college = college;
+        this.marjor = marjor;
     }
 
     public Integer getId() {
@@ -142,6 +149,22 @@ public class PageOrSize {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public String getCollege() {
+        return college;
+    }
+
+    public void setCollege(String college) {
+        this.college = college;
+    }
+
+    public String getMarjor() {
+        return marjor;
+    }
+
+    public void setMarjor(String marjor) {
+        this.marjor = marjor;
     }
 
     @Override

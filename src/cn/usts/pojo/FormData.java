@@ -3,7 +3,8 @@ package cn.usts.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 /**
  * @Author: ${朱朝阳}
@@ -31,6 +32,7 @@ public class FormData {
     /**
      * 时间
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date personalTime;
     /**
      * 等级 OR 级别
@@ -64,13 +66,19 @@ public class FormData {
      */
     private SysUser sysUser;
 
+    private String userToken;
+
+    private String marjor;
+
+    private String college;
 
     public FormData() {
     }
 
     public FormData(Integer pId, String category, String title, String support,
                     Date personalTime, String personalLevel, String department,
-                    String filepath, String tableName, Integer uID, String filename,SysUser sysUser) {
+                    String filepath, String tableName, Integer uID, String filename,
+                    SysUser sysUser, String college, String marjor) {
         this.pId = pId;
         this.category = category;
         this.title = title;
@@ -82,7 +90,9 @@ public class FormData {
         this.tableName = tableName;
         this.uID = uID;
         this.filename = filename;
-        this.sysUser= sysUser;
+        this.sysUser = sysUser;
+        this.college = college;
+        this.marjor = marjor;
     }
 
     public Integer getpId() {
@@ -117,7 +127,7 @@ public class FormData {
         this.support = support;
     }
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+
     public Date getPersonalTime() {
         return personalTime;
     }
@@ -180,6 +190,30 @@ public class FormData {
 
     public void setSysUser(SysUser sysUser) {
         this.sysUser = sysUser;
+    }
+
+    public String getUserToken() {
+        return userToken;
+    }
+
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
+    }
+
+    public String getMarjor() {
+        return marjor;
+    }
+
+    public void setMarjor(String marjor) {
+        this.marjor = marjor;
+    }
+
+    public String getCollege() {
+        return college;
+    }
+
+    public void setCollege(String college) {
+        this.college = college;
     }
 
     @Override

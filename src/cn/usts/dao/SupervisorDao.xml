@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离 
+注意：使用mapper代理方法开发，namespace有特殊重要的作用，namespace等于mapper接口地址
+-->
+<mapper namespace="cn.usts.dao.SupervisorDao">
+
+    <insert id="save" parameterType="supervisor">
+        <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+        supervisor
+        (uId,descName,filename,filepath,college,marjor,isAllCanLook,canLookPersonIds,canLookPersonNames)
+        VALUES (
+        #{uId},#{descName},#{filename}, #{filepath},#{college},#{marjor},
+        #{isAllCanLook},#{canLookPersonIds},#{canLookPersonNames}
+        )
+    </insert>
+
+    <!-- 列表 查看同院的  且  自己为督导指定者 -->
+    <select id="queryAll" parameterType="supervisor" resultType="supervisor">
+        SELECT
+	    DISTINCT (supervisor.id),
+	    supervisor.*
+        FROM
+            supervisor
+            <if test="role != 5">
+                ,supervisor_temp
+            </if>
+        WHERE
+            college = #{college}
+            <if test="role != 5">
+                AND (
+                    supervisor.isAllCanLook = 1
+                    OR (
+                                supervisor.isAllCanLook = 0
+                                AND
+                                supervisor_temp.uId = #{uId}
+                                AND
+                                supervisor.id = supervisor_temp.sId
+                        )
+                    )
+            </if>
+            <if test="role == 5">
+              OR (
+                supervisor.uId = #{uId}
+              )
+            </if>
+        ORDER BY supervisor.id DESC
+            limit #{start},#{size}
+    </select>
+
+    <!-- 列表 查看同院的  且  自己为督导指定者 -->
+    <select id="getCount" parameterType="supervisor" resultType="int">
+        SELECT
+        COUNT(DISTINCT supervisor.id)
+        FROM
+        supervisor
+        <if test="role != 5">
+            ,supervisor_temp
+        </if>
+        WHERE
+        college = #{college}
+        <if test="role != 5">
+            AND (
+            supervisor.isAllCanLook = 1
+            OR (
+            supervisor.isAllCanLook = 0
+            AND
+            supervisor_temp.uId = #{uId}
+            AND
+            supervisor.id = supervisor_temp.sId
+            )
+            )
+        </if>
+        <if test="role == 5">
+            OR (
+            supervisor.uId = #{uId}
+            )
+        </if>
+    </select>
+
+    <delete id="delete" parameterType="supervisor">
+        DELETE FROM
+        supervisor
+        WHERE
+        id = #{id}
+    </delete>
+
+
+    <select id="queryByBean" parameterType="supervisor" resultType="supervisor">
+        SELECT
+        *
+        FROM
+        supervisor
+        WHERE
+        id = #{id}
+    </select>
+
+    <!-- 为校领导或老师筛选下载使用 区别：不带有分类 -->
+    <resultMap type="supervisor" id="maps">
+        <id property="id" column="id"/>
+        <result property="uId" column="uId"/>
+        <result property="descName" column="descName"/>
+        <result property="filename" column="filename"/>
+        <result property="filepath" column="filepath"/>
+        <result property="isAllCanLook" column="isAllCanLook"/>
+        <result property="canLookPersonNames" column="canLookPersonNames"/>
+        <result property="canLookPersonIds" column="canLookPersonIds"/>
+
+        <collection property="sysUser" ofType="sysUser">
+            <id property="id" column="suserId"/>
+            <result property="realName" column="realName"/>
+        </collection>
+    </resultMap>
+    <select id="queryByBean2" parameterType="supervisor" resultMap="maps">
+        select
+        sys_user.realName,
+        sys_user.id as suserId,
+        supervisor.*
+        from
+        supervisor,
+        supervisor_temp,
+        sys_user
+        where
+        supervisor.id = #{id}
+        AND
+        supervisor_temp.sId = #{id}
+        AND
+        sys_user.id = supervisor_temp.uId
+    </select>
+
+    <update id="updateFile" parameterType="supervisor">
+        UPDATE
+        supervisor
+        SET
+        filepath = '',
+        filename = ''
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="update" parameterType="supervisor">
+        UPDATE
+        supervisor
+        SET
+        descName = #{descName},
+        filename = #{filename},
+        filepath = #{filepath},
+        isAllCanLook = #{isAllCanLook},
+        canLookPersonIds = #{canLookPersonIds},
+        canLookPersonNames = #{canLookPersonNames}
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>

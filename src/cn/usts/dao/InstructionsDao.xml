@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离 
+注意：使用mapper代理方法开发，namespace有特殊重要的作用，namespace等于mapper接口地址
+-->
+<mapper namespace="cn.usts.dao.InstructionsDao">
+
+    <insert id="save" parameterType="instructs">
+        <selectKey keyProperty="id" keyColumn="id" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO instructions
+        (senderId,receiverId,content,nowDate,title,status)
+        VALUES
+        (#{senderId},#{receiverId},#{content},#{nowDate},#{title},0)
+    </insert>
+
+    <resultMap type="instructs" id="instructsUser">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="nowDate" column="nowDate"/>
+        <result property="title" column="title"/>
+        <result property="status" column="status"/>
+        <!--
+			一对一查询
+		 -->
+        <association property="sysUser" javaType="sysUser">
+            <result property="realName" column="realName"/>
+            <result property="role" column="role"/>
+        </association>
+    </resultMap>
+
+    <select id="queryByBean" resultMap="instructsUser">
+        SELECT
+        instructions.id,
+        instructions.content,
+        instructions.nowDate,
+        instructions.title,
+        instructions.status,
+        sys_user.realName,
+        sys_user.role
+        FROM
+        instructions
+        INNER JOIN
+        sys_user
+        ON
+        sys_user.id = instructions.senderId
+        WHERE
+        receiverId = #{uId}
+        order by id desc
+        limit #{pageNo},#{pageSize}
+    </select>
+
+    <select id="getCountSize" resultType="int">
+        SELECT
+        count(id)
+        FROM
+        instructions
+        WHERE
+        receiverId = #{uId}
+    </select>
+
+    <select id="queryById" resultType="instructs">
+        SELECT
+        instructions.id,
+        instructions.content,
+        instructions.nowDate,
+        instructions.title,
+        sys_user.realName,
+        sys_user.role
+        FROM
+        instructions
+        INNER JOIN
+        sys_user
+        ON
+        sys_user.id = instructions.senderId
+        WHERE
+        instructions.id = #{id}
+    </select>
+
+    <update id="update" parameterType="instructs">
+        UPDATE
+        instructions
+        SET
+        status = 1
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>

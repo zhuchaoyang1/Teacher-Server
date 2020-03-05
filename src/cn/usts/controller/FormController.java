@@ -1,15 +1,19 @@
 package cn.usts.controller;
 
 import cn.usts.pojo.FormData;
+import cn.usts.pojo.SysUser;
 import cn.usts.pojo.page.PageOrSize;
 import cn.usts.pojo.vo.FormToken;
 import cn.usts.service.FormService;
+import cn.usts.service.UserService;
 import cn.usts.util.ConvertTime;
 import cn.usts.util.JSONBean;
 import cn.usts.util.excel.CreateExcelUtil;
 import cn.usts.util.session.SessionContext;
 import cn.usts.util.zip.ZipMultiFile;
 import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -44,18 +48,8 @@ public class FormController {
 
     @Resource
     private FormService formService;
-
-//    @Resource
-//    private CreateExcelUtil createExcelUtil;
-
-    /**
-     * @InitBinder public void initBinder(WebDataBinder binder) {
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    format.setLenient(false);
-    binder.registerCustomEditor(Date.class, new CustomDateEditor(format,false));
-    }
-     * @param binder
-     */
+    @Autowired
+    private UserService userService;
 
 
     /**
@@ -73,16 +67,20 @@ public class FormController {
         HttpSession userSession = sessionContext.getSession(accessToken);
         int uId = Integer.parseInt(String.valueOf(userSession.getAttribute("u_id")));
 
+        List<SysUser> listUser = userService.queryById(uId);
+        String college = null, marjor = null;
+        if (listUser.size() > 0) {
+            college = listUser.get(0).getCollege();
+            marjor = listUser.get(0).getMajor();
+        }
+
         FormData formData = formToken.getFormData();
+        formData.setCollege(college);
+        formData.setMarjor(marjor);
         formData.setuID(uId);
 
-        Date date = null;
-        try {
-            date = ConvertTime.timeStrToDate2(formToken.getStrTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        formToken.getFormData().setPersonalTime(date);
+        DateTime dateTime = new DateTime(formToken.getStrTime());
+        formData.setPersonalTime(dateTime.toDate());
 
         formService.save(formData);
         return new JSONBean("success", formData.getpId());
@@ -99,6 +97,12 @@ public class FormController {
         int uId = Integer.parseInt(String.valueOf(userSession.getAttribute("u_id")));
 
         pageOrSize.setId(uId);
+
+        // 对PageOrSize构造学院信息和专业信息
+        SysUser user = userService.queryById(uId).get(0);
+        // 为不同身份提供不同权限
+        pageOrSize.setCollege(user.getCollege());
+        pageOrSize.setMarjor(user.getMajor());
 
         // 获取数据总长度
         int size = formService.getCountSize(pageOrSize);
@@ -159,6 +163,12 @@ public class FormController {
         int uId = Integer.parseInt(String.valueOf(userSession.getAttribute("u_id")));
 
         pageOrSize.setId(uId);
+        // 对PageOrSize构造学院信息和专业信息
+        SysUser user = userService.queryById(uId).get(0);
+        // 为不同身份提供不同权限
+        pageOrSize.setCollege(user.getCollege());
+        pageOrSize.setMarjor(user.getMajor());
+
 
         // 获取数据总长度
         int size = formService.formDataByConCount(pageOrSize);
@@ -202,6 +212,11 @@ public class FormController {
         int uId = Integer.parseInt(String.valueOf(userSession.getAttribute("u_id")));
 
         pageOrSize.setId(uId);
+        // 对PageOrSize构造学院信息和专业信息
+        SysUser user = userService.queryById(uId).get(0);
+        // 为不同身份提供不同权限
+        pageOrSize.setCollege(user.getCollege());
+        pageOrSize.setMarjor(user.getMajor());
 
         if (!StringUtils.isEmpty(pageOrSize.getStrTime())) {
             Date date = null;
@@ -213,7 +228,6 @@ public class FormController {
             pageOrSize.getFormData().setPersonalTime(date);
         }
 
-        // 查询所有记录  不分页
         List<FormData> list = formService.formDataByConNoPage(pageOrSize);
 
 
@@ -256,5 +270,100 @@ public class FormController {
         return new JSONBean("success", null);
     }
 
+    @RequestMapping("/find/by")
+    @ResponseBody
+    public JSONBean queryByBeans(@RequestBody FormData formData) {
+        // 获取对应用户Session中保存的用户ID
+        String accessToken = formData.getUserToken();
+        SessionContext sessionContext = SessionContext.getInstance();
+        HttpSession userSession = sessionContext.getSession(accessToken);
+        int uId = Integer.parseInt(String.valueOf(userSession.getAttribute("u_id")));
+
+        formData.setuID(uId);
+
+        List<FormData> query = formService.queryByBean(formData);
+
+        String str = "0";
+        if (query.size() > 0) {
+            if (query.get(0).getSysUser() != null) {
+                if (query.get(0).getSysUser().getId() != uId) {
+                    // 说明暂无权限
+                    str = "No Auth";
+                }
+                // 保密ID
+                query.get(0).getSysUser().setId(0);
+            }
+        } else {
+            str = "Empty";
+        }
+
+        return new JSONBean(str, query);
+    }
+
+    @RequestMapping("/has/file")
+    @ResponseBody
+    public JSONBean pdHasFile(@RequestBody FormData formData) {
+        List<FormData> query = formService.queryByBean(formData);
+        return new JSONBean("0", query.get(0));
+    }
+
+    @RequestMapping("/update")
+    @ResponseBody
+    public JSONBean updateFormData(@RequestBody FormData formData) {
+        DateTime dateTime = new DateTime(formData.getPersonalTime());
+        formData.setPersonalTime(dateTime.plusDays(1).toDate());
+        formService.update(formData);
+        return new JSONBean("0", "ok");
+    }
+
+    /**
+     * 为了减少前端访问接口的数量
+     * 该接口：查看当前是否具有权限， 若有权限则删除   无权限则告知前端
+     *
+     * @param formData
+     * @return
+     */
+    @RequestMapping("/delete/file/data/pid")
+    @ResponseBody
+    public JSONBean deleteFileAndDataBaseByPID(@RequestBody FormData formData, HttpSession session) {
+        String msg = "", data = "";
+
+        // 获取对应用户Session中保存的用户ID
+        String accessToken = formData.getUserToken();
+        SessionContext sessionContext = SessionContext.getInstance();
+        HttpSession userSession = sessionContext.getSession(accessToken);
+        int uId = Integer.parseInt(String.valueOf(userSession.getAttribute("u_id")));
+
+        formData.setuID(uId);
+
+        List<FormData> list = formService.queryBeBean2(formData);
+        try {
+            if (list.size() > 0) {
+                // 表示有权限
+                FormData currData = list.get(0);
+                if (!StringUtils.isEmpty(currData.getFilepath())) {
+                    // 删除文件
+                    String logoRealPath = session.getServletContext().getRealPath(currData.getFilepath());
+                    File file = new File(logoRealPath);
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                }
+                formService.delete(formData);
+                msg = "0";
+                data = "ok";
+            } else {
+                // 表示暂无权限
+                msg = "error";
+                data = "none";
+            }
+        } catch (Exception r) {
+            // 服务器内部错误   排查是否文件删除有问题
+            msg = "error";
+            data = "error";
+        }
+
+        return new JSONBean(msg, data);
+    }
 
 }

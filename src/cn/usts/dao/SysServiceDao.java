@@ -9,4 +9,6 @@ import cn.usts.pojo.SysService;
  */
 
 public interface SysServiceDao extends IBaseDao<SysService> {
+
+
 }

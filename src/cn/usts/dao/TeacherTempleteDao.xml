@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离 
+注意：使用mapper代理方法开发，namespace有特殊重要的作用，namespace等于mapper接口地址
+-->
+<mapper namespace="cn.usts.dao.TeacherTempleteDao">
+
+    <insert id="save" parameterType="teacherTemplete">
+        <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+        teacher_templete
+        (filename,filepath,desct,college,u_id,uName)
+        VALUES (
+        #{filename},#{filepath},#{desct}, #{college},#{uId},#{uName}
+        )
+    </insert>
+
+    <select id="queryAllS" parameterType="teacherTemplete" resultType="teacherTemplete">
+        SELECT
+        *
+        FROM
+        teacher_templete
+        WHERE
+        college = #{college}
+        ORDER BY id desc
+        limit #{start},#{size}
+    </select>
+
+    <select id="queryCount" parameterType="teacherTemplete" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        teacher_templete
+        WHERE
+        college = #{college}
+    </select>
+
+    <delete id="delete" parameterType="teacherTemplete">
+        DELETE FROM
+        teacher_templete
+        WHERE
+        id = #{id}
+    </delete>
+
+    <select id="queryByBean" parameterType="teacherTemplete" resultType="teacherTemplete">
+        SELECT
+        *
+        FROM
+        teacher_templete
+        WHERE
+        u_id = #{uId}
+    </select>
+
+</mapper>

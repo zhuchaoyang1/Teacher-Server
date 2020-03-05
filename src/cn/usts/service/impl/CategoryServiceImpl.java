@@ -24,8 +24,18 @@ public class CategoryServiceImpl implements CategoryService {
         List<String> cateNames = categoryVO.getCateNames();
         cateNames.forEach(var -> {
             CategoryEntity categoryEntity = CategoryEntity.builder()
-                    .cate_name(var).build();
+                    .cateName(var).build();
             categoryDao.save(categoryEntity);
         });
+    }
+
+    @Override
+    public List<CategoryEntity> queryAll() {
+        return categoryDao.queryAll();
+    }
+
+    @Override
+    public void delete(CategoryEntity categoryEntity) {
+        categoryDao.delete(categoryEntity);
     }
 }
