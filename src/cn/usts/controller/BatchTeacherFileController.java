@@ -8,6 +8,7 @@ import cn.usts.service.CollegeService;
 import cn.usts.service.MarjorService;
 import cn.usts.service.UserService;
 import cn.usts.util.JSONBean;
+import cn.usts.util.enums.SysUserCheck;
 import cn.usts.util.excel.CascadeComboBox;
 import cn.usts.util.jxls.JXlsExcelHelper;
 import cn.usts.util.websocket.SpringWebSocketHandler;
@@ -200,18 +201,24 @@ public class BatchTeacherFileController {
 
         // 进行插入数据库
         teachersFromFile.stream().forEach(item -> {
-            // 验证数据完整性
-            String vailadData = validateData(item);
-            if (item.getPhone().contains("E")) {
-                springWebSocketHandler.sendMessageToUser(socketId, new TextMessage("Failed： 教师 " + item.getRealName() + " 手机号填写错误，请输入字符形数据"));
+            if (item.getPhone().contains("E") ||
+                    item.getName().contains("E") ||
+                    item.getPassword().contains("E")) {
+                springWebSocketHandler.sendMessageToUser(socketId,
+                        new TextMessage("Failed： 教师 " + item.getRealName() + " 所有数据必须输入字符形数据"
+                        )
+                );
             } else {
+                // 验证数据完整性
+                String vailadData = validateData(item);
+                List<SysUser> list;
                 if (StringUtils.isEmpty(vailadData)) {
                     // 校验学院数据是否正确 防止胡乱输入
                     if (allCollegeNames.contains(item.getCollege())) {
                         item.setRole(this.roleStrToInt(item.getRoleStr()));
                         // 学院名称输入正确
                         // 数据完整 可以进行插入数据库
-                        List<SysUser> list = userService.queryByRealNameAndUsernameAndCollege(
+                        list = userService.queryByRealNameAndUsernameAndCollege(
                                 new SysUser(
                                         item.getRealName(),
                                         item.getName(),
@@ -241,31 +248,50 @@ public class BatchTeacherFileController {
 
     /**
      * 验证数据
+     * 0: 管理员  不做清空字段处理
+     * 1:学院领导    只绑定院角色   且把专业清空
+     * 2:老师     检查学院属性   检查专业属性
+     * 3:专业（系）主任   检查学院属性   检查专业属性
+     * 4：教务主任   检查学院属性    且把专业清空
+     * 5：教学督导   检查学院属性    且把专业清空
      *
      * @param sysUser
      * @return
      */
     private String validateData(SysUser sysUser) {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
+        if (StringUtils.isEmpty(sysUser.getRoleStr())) {
+            // 专业为空
+            return SysUserCheck.NO_ROLE_STR.getStr();
+        }
+
+        if (sysUser.getRoleStr().equals("学院领导") ||
+                sysUser.getRoleStr().equals("教务主任") ||
+                sysUser.getRoleStr().equals("教学督导")) {
+            sysUser.setMajor("");
+        }
+
         if (StringUtils.isEmpty(sysUser.getRealName())) {
-            stringBuffer.append("真实姓名不能为空，");
+            stringBuilder.append(SysUserCheck.NO_REAL_NAME.getStr() + "，");
         }
         if (StringUtils.isEmpty(sysUser.getName())) {
-            stringBuffer.append("账号不能为空，");
+            stringBuilder.append(SysUserCheck.NO_NAME.getStr() + "，");
         }
         if (StringUtils.isEmpty(sysUser.getPassword())) {
-            stringBuffer.append("密码不能为空，");
+            stringBuilder.append(SysUserCheck.NO_PASS.getStr() + "，");
         }
-        if (StringUtils.isEmpty(sysUser.getMajor())) {
-            stringBuffer.append("专业不能为空，");
-        }
-        if (StringUtils.isEmpty(sysUser.getRoleStr())) {
-            stringBuffer.append("角色不能为空，");
+        // 管理员、院长、教务主任、教务督导  不需要检查
+        if (!sysUser.getRoleStr().equals("管理员") &&
+                !sysUser.getRoleStr().equals("院长") &&
+                !sysUser.getRoleStr().equals("教务主任") &&
+                !sysUser.getRoleStr().equals("教务督导") &&
+                StringUtils.isEmpty(sysUser.getMajor())) {
+            stringBuilder.append(SysUserCheck.NO_MARJOR.getStr() + "，");
         }
         if (StringUtils.isEmpty(sysUser.getCollege())) {
-            stringBuffer.append("学院不能为空，");
+            stringBuilder.append(SysUserCheck.NO_COLLEGE.getStr() + "，");
         }
-        return stringBuffer.toString();
+        return stringBuilder.toString();
     }
 
     private Integer roleStrToInt(String role) {

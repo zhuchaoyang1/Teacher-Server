@@ -1,0 +1,14 @@
+# Created by .ignore support plugin
+*.class
+*.jar
+target/
+*.iml
+.idea/
+logs/
+.classpath
+.project
+.settings/
+.amateras
+/target*
+*.log*
+*.lock

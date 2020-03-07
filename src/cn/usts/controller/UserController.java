@@ -3,6 +3,7 @@ package cn.usts.controller;
 import cn.usts.pojo.SysUser;
 import cn.usts.service.UserService;
 import cn.usts.util.JSONBean;
+import cn.usts.util.enums.SysUserCheck;
 import cn.usts.util.session.SessionContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -75,13 +76,7 @@ public class UserController {
     @RequestMapping("/single/import")
     @ResponseBody
     public JSONBean insertSingle(@RequestBody SysUser sysUser) {
-        if (StringUtils.isEmpty(sysUser.getRealName()) ||
-                StringUtils.isEmpty(sysUser.getCollege()) ||
-                StringUtils.isEmpty(sysUser.getMajor()) ||
-                StringUtils.isEmpty(sysUser.getRole()) ||
-                StringUtils.isEmpty(sysUser.getPassword()) ||
-                StringUtils.isEmpty(sysUser.getPhone()) ||
-                StringUtils.isEmpty(sysUser.getName())) {
+        if (!StringUtils.isEmpty(this.validateData(sysUser))) {
             return new JSONBean("error", "表单数据未填写完整");
         }
         // 严重是否重复导入
@@ -91,6 +86,54 @@ public class UserController {
         } else {
             return new JSONBean("error", "该教师已存在，不可重复导入");
         }
+    }
+
+    /**
+     * 验证数据
+     * 0: 管理员  不做清空字段处理
+     * 1:学院领导    只绑定院角色   且把专业清空
+     * 2:老师     检查学院属性   检查专业属性
+     * 3:专业（系）主任   检查学院属性   检查专业属性
+     * 4：教务主任   检查学院属性    且把专业清空
+     * 5：教学督导   检查学院属性    且把专业清空
+     *
+     * @param sysUser
+     * @return
+     */
+    private String validateData(SysUser sysUser) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (StringUtils.isEmpty(sysUser.getRoleStr())) {
+            // 专业为空
+            return SysUserCheck.NO_ROLE_STR.getStr();
+        }
+
+        if (sysUser.getRole() == 0 ||
+                sysUser.getRole() == 1 ||
+                sysUser.getRole() == 4 ||
+                sysUser.getRole() == 5) {
+            sysUser.setMajor("");
+        }
+
+        if (StringUtils.isEmpty(sysUser.getRealName())) {
+            stringBuilder.append(SysUserCheck.NO_REAL_NAME.getStr() + "，");
+        }
+        if (StringUtils.isEmpty(sysUser.getName())) {
+            stringBuilder.append(SysUserCheck.NO_NAME.getStr() + "，");
+        }
+        if (StringUtils.isEmpty(sysUser.getPassword())) {
+            stringBuilder.append(SysUserCheck.NO_PASS.getStr() + "，");
+        }
+        // 管理员、院长、教务主任、教务督导  不需要检查
+        if (sysUser.getRole() != 0 &&
+                sysUser.getRole() != 1 &&
+                sysUser.getRole() != 4 &&
+                sysUser.getRole() != 5) {
+            stringBuilder.append(SysUserCheck.NO_MARJOR.getStr() + "，");
+        }
+        if (StringUtils.isEmpty(sysUser.getCollege())) {
+            stringBuilder.append(SysUserCheck.NO_COLLEGE.getStr() + "，");
+        }
+        return stringBuilder.toString();
     }
 
     /**
