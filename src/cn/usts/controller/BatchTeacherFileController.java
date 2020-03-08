@@ -282,9 +282,9 @@ public class BatchTeacherFileController {
         }
         // 管理员、院长、教务主任、教务督导  不需要检查
         if (!sysUser.getRoleStr().equals("管理员") &&
-                !sysUser.getRoleStr().equals("院长") &&
+                !sysUser.getRoleStr().equals("学院领导") &&
                 !sysUser.getRoleStr().equals("教务主任") &&
-                !sysUser.getRoleStr().equals("教务督导") &&
+                !sysUser.getRoleStr().equals("教学督导") &&
                 StringUtils.isEmpty(sysUser.getMajor())) {
             stringBuilder.append(SysUserCheck.NO_MARJOR.getStr() + "，");
         }

@@ -13,9 +13,4 @@
       <module name="TeachingManagement" target="8" />
     </bytecodeTargetLevel>
   </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="TeachingManagement" options="" />
-    </option>
-  </component>
 </project>

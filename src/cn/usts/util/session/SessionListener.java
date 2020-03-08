@@ -17,11 +17,13 @@ public class SessionListener implements HttpSessionListener {
         HttpSession session = httpSessionEvent.getSession();
         System.out.println("============= 会话创建 ===  当前会话数：" + sessionContext.getSessionSize());
         sessionContext.addSession(session);
+        sessionContext.printAllSession();
     }
 
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
         HttpSession session = httpSessionEvent.getSession();
         sessionContext.delSession(session);
         System.out.println("============= 会话销毁 === 剩下会话数：" + sessionContext.getSessionSize());
+        sessionContext.printAllSession();
     }
 }

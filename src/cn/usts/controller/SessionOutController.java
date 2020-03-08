@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 登录会话超期
+ *
  * @Author: ${朱朝阳}
  * @Date: 2019/7/18 21:19
  */
@@ -17,8 +18,8 @@ public class SessionOutController {
 
     @RequestMapping("/out")
     @ResponseBody
-    public JSONBean sessionOut(){
-        return new JSONBean("session","SessionOut");
+    public JSONBean sessionOut() {
+        return new JSONBean("session", "SessionOut");
     }
 
 }

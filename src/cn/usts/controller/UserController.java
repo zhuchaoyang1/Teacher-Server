@@ -102,7 +102,7 @@ public class UserController {
      */
     private String validateData(SysUser sysUser) {
         StringBuilder stringBuilder = new StringBuilder();
-        if (StringUtils.isEmpty(sysUser.getRoleStr())) {
+        if (sysUser.getRole() == null) {
             // 专业为空
             return SysUserCheck.NO_ROLE_STR.getStr();
         }
@@ -127,7 +127,8 @@ public class UserController {
         if (sysUser.getRole() != 0 &&
                 sysUser.getRole() != 1 &&
                 sysUser.getRole() != 4 &&
-                sysUser.getRole() != 5) {
+                sysUser.getRole() != 5 &&
+                StringUtils.isEmpty(sysUser.getMajor())) {
             stringBuilder.append(SysUserCheck.NO_MARJOR.getStr() + "，");
         }
         if (StringUtils.isEmpty(sysUser.getCollege())) {

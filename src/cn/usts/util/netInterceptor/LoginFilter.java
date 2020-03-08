@@ -48,14 +48,17 @@ public class LoginFilter implements Filter {
                     requestUrl.equals("/TeachingManagement/form/singalDownload.do") ||
                     requestUrl.equals("/TeachingManagement/file/deleteFile.do") ||
                     requestUrl.equals("/TeachingManagement/out/system.do") ||
+                    requestUrl.equals("/TeachingManagement/out/clear/all/sessions.do") ||
                     requestUrl.equals("/TeachingManagement/form/screen.do")) {
                 // 登录请求直接放行 或者 Tomcat加载 或者Upload上传文件 或者 下载文件  或者 注销
                 flag = true;
             } else {
                 String usertoken = request.getHeader("usertoken");
+                System.out.println("用户UserToken:" + usertoken);
                 SessionContext sessionContext = SessionContext.getInstance();
                 HttpSession session = sessionContext.getSession(usertoken);
                 if (session == null) {
+                    System.out.println("Session中没有:" + usertoken);
                     // 登录过期不予放行
                     flag = false;
                 }
