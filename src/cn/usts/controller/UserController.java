@@ -4,7 +4,10 @@ import cn.usts.pojo.SysUser;
 import cn.usts.service.UserService;
 import cn.usts.util.JSONBean;
 import cn.usts.util.enums.SysUserCheck;
+import cn.usts.util.enums.SysUserEnum;
 import cn.usts.util.session.SessionContext;
+import com.alibaba.druid.stat.JdbcDataSourceStatMBean;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -14,10 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 
 /**
  * @Author: ${朱朝阳}
@@ -172,5 +173,74 @@ public class UserController {
 
         return new JSONBean("0", userService.queryByCollege(sysUser));
     }
+
+    @RequestMapping("/queryById")
+    @ResponseBody
+    public JSONBean queryUserById(@RequestBody SysUser sysUser) {
+        String accessToken = sysUser.getUserToken();
+        SessionContext sessionContext = SessionContext.getInstance();
+        HttpSession userSession = sessionContext.getSession(accessToken);
+        int uId = Integer.parseInt(String.valueOf(userSession.getAttribute("u_id")));
+        List<SysUser> users = userService.queryById(uId);
+        SysUser result = new SysUser();
+        result = users.isEmpty() ? result : users.get(0);
+        result.setId(-100);
+
+        /**
+         * * 0：系统管理员
+         *      * 1：学院领导
+         *      * 2：老师
+         *      * 3：系(专业)主任: 可以看到当前专业下的所有老师资料
+         *      * 4：教务主任
+         *      * 5：教学督导
+         */
+        if (sysUser != null) {
+            SysUser finalResult = result;
+            Arrays.stream(SysUserEnum.values()).forEach(var -> {
+                if (finalResult.getRole() != 0 && (finalResult.getRole() == var.getRole())) {
+                    finalResult.setRoleStr(var.getRoleStr());
+                }
+            });
+            BeanUtils.copyProperties(finalResult, result);
+            result.setOldPersonPath(result.getPhotoPath());
+            result.setOldDiplomaPath(result.getDiplomaPath());
+            result.setOldPwd(result.getPassword());
+        }
+        return new JSONBean(users.isEmpty() ? "-1" : "0", result);
+    }
+
+
+    @RequestMapping("/update")
+    @ResponseBody
+    public JSONBean updateUser(@RequestBody SysUser sysUser) {
+        // 获取对应用户Session中保存的用户ID
+        SessionContext sessionContext = SessionContext.getInstance();
+        HttpSession userSession = sessionContext.getSession(sysUser.getUserToken());
+        int uId = Integer.parseInt(String.valueOf(userSession.getAttribute("u_id")));
+
+        if (!StringUtils.isEmpty(sysUser.getOldPersonPath()) && !sysUser.getOldPersonPath().equals(sysUser.getPhotoPath())) {
+            // 说明更新了个人照片
+            // 删除旧照片
+            File oldPersonFile = new File(sysUser.getOldPersonPath());
+            if (oldPersonFile.exists()) oldPersonFile.delete();
+        }
+        if (!StringUtils.isEmpty(sysUser.getOldDiplomaPath()) && !sysUser.getOldDiplomaPath().equals(sysUser.getDiplomaPath())) {
+            // 更新学历证书照片
+            // 删除旧照片
+            File oldDipFile = new File(sysUser.getOldDiplomaPath());
+            if (oldDipFile.exists()) oldDipFile.delete();
+        }
+        if (!StringUtils.isEmpty(sysUser.getOldPwd()) && !sysUser.getPassword().equals(sysUser.getOldPwd())) {
+            sysUser.setIsUpdatePwdFlag("update");
+        } else {
+            sysUser.setIsUpdatePwdFlag("");
+        }
+
+        sysUser.setId(uId);
+        userService.update(sysUser);
+
+        return new JSONBean("0", null);
+    }
+
 
 }

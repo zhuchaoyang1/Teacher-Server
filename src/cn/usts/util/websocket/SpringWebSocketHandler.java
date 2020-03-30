@@ -1,5 +1,6 @@
 package cn.usts.util.websocket;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Component
 public class SpringWebSocketHandler extends TextWebSocketHandler {
 
@@ -31,10 +33,10 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
      */
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 
-        System.out.println("成功建立websocket连接!");
+//        System.out.println("成功建立websocket连接!");
         String userId = session.getId();
         users.put(userId, session);
-        System.out.println("当前线上用户数量:" + users.size());
+//        System.out.println("当前线上用户数量:" + users.size());
 
         //这块会实现自己业务，比如，当用户登录后，会把离线消息推送给用户
         TextMessage returnMessage = new TextMessage(userId);
@@ -46,9 +48,9 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
      */
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         String userId = session.getId();
-        System.out.println("用户" + userId + "已退出！");
+//        System.out.println("用户" + userId + "已退出！");
         users.remove(userId);
-        System.out.println("剩余在线用户" + users.size());
+//        System.out.println("剩余在线用户" + users.size());
     }
 
     /**
@@ -62,7 +64,7 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
         /**
          * 收到消息，自定义处理机制，实现业务
          */
-        System.out.println("服务器收到消息：" + message);
+//        System.out.println("服务器收到消息：" + message);
 
         if (message.getPayload().startsWith("#anyone#")) { //单发某人
 
@@ -82,7 +84,7 @@ public class SpringWebSocketHandler extends TextWebSocketHandler {
         if (session.isOpen()) {
             session.close();
         }
-        System.out.println("传输出现异常，关闭websocket连接... ");
+//        System.out.println("传输出现异常，关闭websocket连接... ");
         String userId = session.getId();
         users.remove(userId);
     }

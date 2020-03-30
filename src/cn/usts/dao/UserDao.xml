@@ -102,4 +102,26 @@
 		sys_user.id = #{id}
     </select>
 
+	<update id="update" parameterType="sysUser">
+		UPDATE
+		sys_user
+		SET
+		realName = #{realName},
+		gender = #{gender},
+		nation = #{nation},
+		<if test="isUpdatePwdFlag.equals('update')">
+			password = MD5("${password}"),
+		</if>
+		age = #{age},
+		phone = #{phone},
+		titles = #{titles},
+		education = #{education},
+		introduction = #{introduction},
+		photoPath = #{photoPath},
+		diplomaPath = #{diplomaPath}
+		WHERE
+		id = #{id}
+	</update>
+
+
 </mapper>

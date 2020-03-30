@@ -26,6 +26,7 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
+        log.info("Request URL: {}", request.getRequestURI());
 
         boolean flag = true;
 
@@ -35,7 +36,12 @@ public class LoginFilter implements Filter {
             // 所有的跨域OPTIONS请求直接放行
             flag = true;
         } else {
-            if (requestUrl.equals("/TeachingManagement/batch/import/teachers.do") ||
+            if (requestUrl.endsWith("jpg") ||
+                    requestUrl.endsWith("jpeg") ||
+                    requestUrl.endsWith("png") ||
+                    requestUrl.endsWith("zip") ||
+                    requestUrl.endsWith("rar") ||
+                    requestUrl.equals("/TeachingManagement/batch/import/teachers.do") ||
                     requestUrl.equals("/TeachingManagement/marjor/batch/template/export.do") ||
                     requestUrl.equals("/TeachingManagement/marjor/batch/template/import.do") ||
                     requestUrl.equals("/TeachingManagement/marjor/batch/import.do") ||
@@ -43,6 +49,7 @@ public class LoginFilter implements Filter {
                     requestUrl.equals("/TeachingManagement/user/query.do") ||
                     requestUrl.equals("/TeachingManagement/batch/down/teacher/template.do") ||
                     requestUrl.equals("/") ||
+                    requestUrl.equals("/TeachingManagement/templetes/down/template/detail") ||
                     requestUrl.equals("/TeachingManagement") ||
                     requestUrl.equals("/TeachingManagement/file/fileUpload.do") ||
                     requestUrl.equals("/TeachingManagement/form/singalDownload.do") ||
@@ -54,11 +61,13 @@ public class LoginFilter implements Filter {
                 flag = true;
             } else {
                 String usertoken = request.getHeader("usertoken");
-                System.out.println("用户UserToken:" + usertoken);
+//                System.out.println("用户UserToken:" + usertoken);
+                log.info("User UserToken: {}", usertoken);
                 SessionContext sessionContext = SessionContext.getInstance();
                 HttpSession session = sessionContext.getSession(usertoken);
                 if (session == null) {
-                    System.out.println("Session中没有:" + usertoken);
+//                    System.out.println("Session中没有:" + usertoken);
+                    log.info("No UserToken: {}", usertoken);
                     // 登录过期不予放行
                     flag = false;
                 }

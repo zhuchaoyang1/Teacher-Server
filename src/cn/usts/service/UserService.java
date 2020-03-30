@@ -40,4 +40,6 @@ public interface UserService {
 
     SysUser queryRealNameById(SysUser sysUser);
 
+    void update(SysUser sysUser);
+
 }

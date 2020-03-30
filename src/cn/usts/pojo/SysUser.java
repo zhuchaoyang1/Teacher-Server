@@ -64,6 +64,23 @@ public class SysUser {
 
     private String roleStr;
 
+
+    // 新增教师教资字段
+    private Integer age;
+    private Boolean gender;         // true:男  false:女
+    private String nation;          // 民族
+    private String titles;          // 职称
+    private String education;       // 学历
+    private String diplomaPath;     // 学历证书
+    private String photoPath;       // 照片
+    private String introduction;    // 简单介绍
+
+    private String oldPersonPath;   // 用于用户更新个人照片。保存原数据用于删除照片
+    private String oldDiplomaPath;  // 保存原数据用于删除照片
+    private String oldPwd;          // 判断是否更新过密码
+    private String isUpdatePwdFlag;    // 是否需要SQL更新密码
+
+
     public SysUser(String realName, String name, String college) {
         this.realName = realName;
         this.name = name;

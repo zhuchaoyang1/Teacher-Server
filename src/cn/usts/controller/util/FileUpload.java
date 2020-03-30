@@ -30,6 +30,13 @@ public class FileUpload {
     @Autowired
     private FormService formService;
 
+    /**
+     * 通用上传文件
+     * @param oldFile
+     * @param uploadPath
+     * @param session
+     * @return
+     */
     @RequestMapping("/fileUpload")
     @ResponseBody
     public JSONBean uploadFile(@RequestParam("file") MultipartFile oldFile, String uploadPath, HttpSession session) {

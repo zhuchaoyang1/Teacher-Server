@@ -42,5 +42,8 @@
         <property name="basePackage" value="cn.usts.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
+
+	<!-- 用于上传的静态资源可通过URL方式访问 -->
+	<mvc:resources location="/upload/" mapping="/upload/**"/>
 		
 </beans>

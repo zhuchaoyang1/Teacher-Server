@@ -75,4 +75,9 @@ public class UserServiceImpl implements UserService {
         return userDao.queryRealNameById(sysUser);
     }
 
+    @Override
+    public void update(SysUser sysUser) {
+        userDao.update(sysUser);
+    }
+
 }
