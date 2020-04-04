@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离 
+注意：使用mapper代理方法开发，namespace有特殊重要的作用，namespace等于mapper接口地址
+-->
+<mapper namespace="cn.usts.dao.LeavelDao">
+
+    <select id="queryAll" resultType="leavel">
+        SELECT
+        *
+        FROM
+        leavel
+    </select>
+
+    <insert id="save" parameterType="leavel">
+        <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+        leavel
+        (faleavel,sonleavel)
+        VALUES (
+        #{faleavel},#{sonleavel}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="leavel">
+        DELETE FROM
+        leavel
+        WHERE
+        id = #{id}
+    </delete>
+
+    <select id="queryById" parameterType="int" resultType="leavel">
+      SELECT
+      *
+      FROM
+      leavel
+      WHERE
+      id = #{id}
+    </select>
+
+</mapper>

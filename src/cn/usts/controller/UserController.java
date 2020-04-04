@@ -1,6 +1,8 @@
 package cn.usts.controller;
 
+import cn.usts.pojo.FormData;
 import cn.usts.pojo.SysUser;
+import cn.usts.service.FormService;
 import cn.usts.service.UserService;
 import cn.usts.util.JSONBean;
 import cn.usts.util.enums.SysUserCheck;
@@ -8,6 +10,7 @@ import cn.usts.util.enums.SysUserEnum;
 import cn.usts.util.session.SessionContext;
 import com.alibaba.druid.stat.JdbcDataSourceStatMBean;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -30,7 +33,6 @@ public class UserController {
 
     @Resource
     private UserService userService;
-
 
     /**
      * 登录操作
@@ -240,6 +242,12 @@ public class UserController {
         userService.update(sysUser);
 
         return new JSONBean("0", null);
+    }
+
+    @RequestMapping("/queryBy/form/id")
+    @ResponseBody
+    public JSONBean queryUserByFormID(@RequestBody FormData formData) {
+        return new JSONBean("0", userService.queryByFormId(formData));
     }
 
 

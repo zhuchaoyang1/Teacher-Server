@@ -1,6 +1,7 @@
 package cn.usts.dao;
 
 import cn.usts.dao.base.IBaseDao;
+import cn.usts.pojo.FormData;
 import cn.usts.pojo.SysUser;
 
 import java.util.List;
@@ -49,5 +50,7 @@ public interface UserDao extends IBaseDao<SysUser> {
     List<SysUser> queryByCollege(SysUser sysUser);
 
     SysUser queryRealNameById(SysUser sysUser);
+
+    List<SysUser> queryByFormId(FormData formData);
 
 }

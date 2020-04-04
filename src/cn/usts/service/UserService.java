@@ -1,5 +1,6 @@
 package cn.usts.service;
 
+import cn.usts.pojo.FormData;
 import cn.usts.pojo.SysUser;
 
 import java.util.List;
@@ -41,5 +42,7 @@ public interface UserService {
     SysUser queryRealNameById(SysUser sysUser);
 
     void update(SysUser sysUser);
+
+    List<SysUser> queryByFormId(FormData formData);
 
 }

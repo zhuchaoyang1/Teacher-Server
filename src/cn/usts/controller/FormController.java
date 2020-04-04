@@ -1,10 +1,12 @@
 package cn.usts.controller;
 
 import cn.usts.pojo.FormData;
+import cn.usts.pojo.Leavel;
 import cn.usts.pojo.SysUser;
 import cn.usts.pojo.page.PageOrSize;
 import cn.usts.pojo.vo.FormToken;
 import cn.usts.service.FormService;
+import cn.usts.service.LeavelService;
 import cn.usts.service.UserService;
 import cn.usts.util.ConvertTime;
 import cn.usts.util.JSONBean;
@@ -50,6 +52,8 @@ public class FormController {
     private FormService formService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private LeavelService leavelService;
 
 
     /**
@@ -81,6 +85,13 @@ public class FormController {
 
         DateTime dateTime = new DateTime(formToken.getStrTime());
         formData.setPersonalTime(dateTime.toDate());
+        Integer leavelId = Integer.parseInt(formData.getPersonalLevel());
+        // 根据leavelID查询leavel数据
+        List<Leavel> leavels = leavelService.queryById(leavelId);
+        formData.setPersonalLevel("");
+        if (leavels.size() > 0) {
+            formData.setPersonalLevel(leavels.get(0).getFaleavel() + " - " + leavels.get(0).getSonleavel());
+        }
 
         formService.save(formData);
         return new JSONBean("success", formData.getpId());

@@ -123,5 +123,17 @@
 		id = #{id}
 	</update>
 
+	<select id="queryByFormId" parameterType="formData" resultType="sysUser">
+		SELECT
+		sys_user.*
+		FROM
+		sys_user,
+		personal_teacher
+		WHERE
+		personal_teacher.p_id = #{pId}
+		AND
+		sys_user.id = personal_teacher.u_id
+	</select>
+
 
 </mapper>
