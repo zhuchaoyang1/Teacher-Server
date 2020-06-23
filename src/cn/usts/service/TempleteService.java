@@ -12,4 +12,8 @@ public interface TempleteService {
 
     List<Templete> queryByBean(Templete templete);
 
+    void updateMoudleFileName(Templete templete);
+
+    Templete queryById(Templete templete);
+
 }

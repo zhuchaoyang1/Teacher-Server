@@ -31,4 +31,14 @@ public class TempleteServiceImpl implements TempleteService {
         return templeteDao.queryByBean(templete);
     }
 
+    @Override
+    public void updateMoudleFileName(Templete templete) {
+        templeteDao.updateMoudleFileName(templete);
+    }
+
+    @Override
+    public Templete queryById(Templete templete) {
+        return templeteDao.queryById(templete);
+    }
+
 }

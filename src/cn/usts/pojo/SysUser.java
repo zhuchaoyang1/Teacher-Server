@@ -80,6 +80,8 @@ public class SysUser {
     private String oldPwd;          // 判断是否更新过密码
     private String isUpdatePwdFlag;    // 是否需要SQL更新密码
 
+    private Integer years;          // 提交年龄的入库年份  用于每次计算年纪差值
+
 
     public SysUser(String realName, String name, String college) {
         this.realName = realName;

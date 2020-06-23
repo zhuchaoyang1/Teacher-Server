@@ -6,12 +6,14 @@ import cn.usts.util.JSONBean;
 import com.sun.deploy.net.URLEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.List;
 
@@ -30,7 +32,17 @@ public class TempleteController {
 
     @RequestMapping("/update")
     @ResponseBody
-    public JSONBean update(@RequestBody Templete templete) {
+    public JSONBean update(@RequestBody Templete templete, HttpSession session) {
+        // 根据ID查询到以前的文件 并 删除  防止流浪文件的出现占用硬盘大小
+        Templete fromData = templeteService.queryById(templete);
+        if (fromData.getPath() != null && !StringUtils.isEmpty(fromData.getPath())) {
+            String logoRealPath = session.getServletContext().getRealPath(fromData.getPath());
+            File file = new File(logoRealPath);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+
         templeteService.update(templete);
         return new JSONBean("0", null);
     }
@@ -52,7 +64,7 @@ public class TempleteController {
                 //设置文件下载头
                 //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型
                 response.setContentType("multipart/form-data");
-                response.setHeader("content-disposition", "attachment;filename="+ templete.getFname());
+                response.setHeader("content-disposition", "attachment;filename=" + templete.getFname());
                 // 创建输出流
                 OutputStream out = response.getOutputStream();
                 // 创建缓冲区
@@ -72,5 +84,13 @@ public class TempleteController {
             e.printStackTrace();
         }
     }
+
+    @RequestMapping("/update/moudle/name")
+    @ResponseBody
+    public JSONBean updateMoudleFileName(@RequestBody Templete templete) {
+        templeteService.updateMoudleFileName(templete);
+        return new JSONBean("0", null);
+    }
+
 
 }

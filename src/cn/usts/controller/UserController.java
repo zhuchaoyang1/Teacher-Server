@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -203,6 +204,13 @@ public class UserController {
                     finalResult.setRoleStr(var.getRoleStr());
                 }
             });
+
+            if (result.getYears() != null && result.getAge() != 0 && result.getYears() != 0) {
+                int currentYear = LocalDateTime.now().getYear();
+                finalResult.setAge(result.getAge() + currentYear - result.getYears());
+            }
+
+
             BeanUtils.copyProperties(finalResult, result);
             result.setOldPersonPath(result.getPhotoPath());
             result.setOldDiplomaPath(result.getDiplomaPath());
@@ -238,6 +246,11 @@ public class UserController {
             sysUser.setIsUpdatePwdFlag("");
         }
 
+        if ((sysUser.getYears() == null || sysUser.getYears() == 0) && sysUser.getAge() != 0) {
+            // 说明之前没有保存过
+            sysUser.setYears(LocalDateTime.now().getYear());
+        }
+
         sysUser.setId(uId);
         userService.update(sysUser);
 
@@ -247,7 +260,14 @@ public class UserController {
     @RequestMapping("/queryBy/form/id")
     @ResponseBody
     public JSONBean queryUserByFormID(@RequestBody FormData formData) {
-        return new JSONBean("0", userService.queryByFormId(formData));
+        List<SysUser> sysUsers = userService.queryByFormId(formData);
+        sysUsers.forEach(item -> {
+            if (item.getYears() != null && item.getAge() != 0 && item.getYears() != 0) {
+                int currentYear = LocalDateTime.now().getYear();
+                item.setAge(item.getAge() + currentYear - item.getYears());
+            }
+        });
+        return new JSONBean("0", sysUsers);
     }
 
 

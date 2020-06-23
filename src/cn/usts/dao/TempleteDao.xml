@@ -35,4 +35,22 @@
         tableName = #{tableName}
     </select>
 
+    <update id="updateMoudleFileName" parameterType="templete">
+      UPDATE
+      ftemplete
+      SET
+      uploadName = #{uploadName}
+      WHERE
+      id = #{id}
+    </update>
+
+    <select id="queryById" parameterType="templete" resultType="templete">
+        SELECT
+        *
+        FROM
+        ftemplete
+        WHERE
+        id = #{id}
+    </select>
+
 </mapper>

@@ -118,7 +118,8 @@
 		education = #{education},
 		introduction = #{introduction},
 		photoPath = #{photoPath},
-		diplomaPath = #{diplomaPath}
+		diplomaPath = #{diplomaPath},
+		years = #{years}
 		WHERE
 		id = #{id}
 	</update>
