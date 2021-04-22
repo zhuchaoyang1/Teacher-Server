@@ -14,7 +14,7 @@
     <url>http://www.example.com</url>
 
     <properties>
-        <mybatis.version>3.2.8</mybatis.version>
+        <mybatis.version>3.5.6</mybatis.version>
         <mybatis.spring.version>1.2.2</mybatis.spring.version>
         <mysql.version>5.1.32</mysql.version>
         <druid.version>1.0.9</druid.version>
